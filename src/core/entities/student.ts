@@ -6,4 +6,5 @@ export interface StudentBaap {
     phone?: BigInt;
     password?: string;
     enrolled?: boolean;
+    teacherId?:string;
 }

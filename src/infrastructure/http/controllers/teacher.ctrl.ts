@@ -22,7 +22,7 @@ export const createTeacher = (
 export const getAllTeachers = (TeacherRepository: ITeacherRepository) =>
     async function (request: FastifyRequest, reply: FastifyReply) {
         try {
-            const Teachers = await TeacherRepository.getAllTeachers();  // Fetch all Teachers
+            const Teachers = await TeacherRepository.getAllTeachers();
             return reply.status(200).send(Teachers);
 
         } catch (error) {
@@ -35,9 +35,9 @@ export const getAllTeachers = (TeacherRepository: ITeacherRepository) =>
         TeacherRepository: ITeacherRepository
     ) => async function (request: FastifyRequest, reply: FastifyReply) {
         try {
-            const { id } = request.params as { id: string };
+            const { teacherId } = request.params as { teacherId: string };
             const updatedTeacher = await TeacherService(TeacherRepository)
-                .updateTeacher(id, request.body as TeacherTrainingPayload);
+                .updateTeacher(teacherId, request.body as TeacherTrainingPayload);
     
             if (!updatedTeacher) {
                 return reply.status(404).send({ error: 'Teacher not found' });
@@ -54,8 +54,8 @@ export const getAllTeachers = (TeacherRepository: ITeacherRepository) =>
         TeacherRepository: ITeacherRepository
     ) => async function (request: FastifyRequest, reply: FastifyReply) {
         try {
-            const { id } = request.params as { id: string };
-            const deleted = await TeacherService(TeacherRepository).deleteTeacher(id);
+            const { teacherId } = request.params as { teacherId: string };
+            const deleted = await TeacherService(TeacherRepository).deleteTeacher(teacherId);
     
             if (!deleted) {
                 return reply.status(404).send({ error: 'Teacher not found' });

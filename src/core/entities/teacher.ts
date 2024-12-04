@@ -1,5 +1,5 @@
 export interface Teacher {
-    uuid: string;
+    teacherId: string;
     name?: string;
     email: string;
     phone: number;

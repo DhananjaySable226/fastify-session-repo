@@ -1,9 +1,10 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from '../../database/index';
 // import User from "@infrastructure/database/models/user.model";
+import TeacherModel from './teacher.model';
 
-class StudentModel extends Model {
-}
+class StudentModel extends Model {};
+
 StudentModel.init(
     {
         uuid: {
@@ -31,7 +32,15 @@ StudentModel.init(
         enrolled: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
-        }
+        },
+        teacherId: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            references: {
+                model: 'teachers',
+                key: 'teacherId',
+            },
+        },
     },
     {
         sequelize,
@@ -39,5 +48,9 @@ StudentModel.init(
         timestamps: true,
     }
 )
+StudentModel.belongsTo(TeacherModel, {
+    foreignKey: 'teacherId',
+    as: 'teacher',
+});
 
 export default StudentModel;

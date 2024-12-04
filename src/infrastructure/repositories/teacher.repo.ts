@@ -16,8 +16,8 @@ export class TeacherRepository implements ITeacherRepository {
     };
 
 
-    async updateTeacher(id: string, teacherPayload: TeacherTrainingPayload): Promise<Teacher | undefined> {
-        const Teacher = await TeacherModel.findByPk(id);
+    async updateTeacher(teacherId: string, teacherPayload: TeacherTrainingPayload): Promise<Teacher | undefined> {
+        const Teacher = await TeacherModel.findByPk(teacherId);
         if (!Teacher) {
             return undefined;
         }
@@ -25,8 +25,8 @@ export class TeacherRepository implements ITeacherRepository {
         return Teacher as unknown as Teacher;
     }
 
-    async deleteTeacher(id: string): Promise<boolean> {
-        const Teacher = await TeacherModel.findByPk(id);
+    async deleteTeacher(teacherId: string): Promise<boolean> {
+        const Teacher = await TeacherModel.findByPk(teacherId);
         if (!Teacher) {
             return false;
         }

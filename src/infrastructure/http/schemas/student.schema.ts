@@ -7,6 +7,7 @@ export const StudentPayload = Type.Object({
     password: Type.String(),
     phone:Type.Integer(),
     enrolled:Type.Boolean(),
+    teacherId:Type.String()
 
 });
 
@@ -17,7 +18,7 @@ export const StudentResponse = Type.Object({
     password: Type.Optional(Type.String()),
     phone: Type.Optional(Type.Integer()),
     enrolled: Type.Optional(Type.Boolean()),
-
+    teacherId: Type.Optional(Type.String()),
 });
 
 export const postStudentSchema: FastifySchema = {
@@ -39,14 +40,17 @@ export const notFoundSchema = Type.Object({
 const StudentParams = Type.Object({
     uuid: Type.String({ description: 'Student Id' }),
 })
+const StudentParams1 = Type.Object({
+    teacherId: Type.String({ description: 'Teacher Id' }),
+})
 
 export const getStudentByID: FastifySchema = {
-    description: 'Gets a single Student',
+    description: 'Gets all students for a teacher',
     tags: ['Student'],
-    summary: 'Gets Student by Id',
-    params: StudentParams,
+    summary: 'Gets students by teacherId',
+    params: StudentParams1,
     response: {
-        200: { ...StudentResponse, description: 'Success' },
+        200: Type.Array(StudentResponse),
         404: { ...notFoundSchema, description: 'Not found' },
     },
 };

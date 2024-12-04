@@ -1,7 +1,7 @@
 import { type RouteOptions } from 'fastify'
 import {
     createStudent,
-    //  getStudentById,
+     getStudentById,
     getAllStudents,
     updateStudent,
     deleteStudent
@@ -28,12 +28,12 @@ export const studentRoutes = (studentRepository: IStudentRepository): RouteOptio
         schema: getAllStudentsSchema,
         handler: getAllStudents(studentRepository)
     },
-    // {
-    //     method: 'GET',
-    //     url: '/studentUser/:id',
-    //     schema: getStudentByID,
-    //     handler: getStudentById(studentRepository)
-    // },
+    {
+        method: 'GET',
+        url: '/studentUser/:teacherId',
+        schema: getStudentByID,
+        handler: getStudentById(studentRepository)
+    },
 
     {
         method: 'PUT',

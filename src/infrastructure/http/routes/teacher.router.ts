@@ -20,12 +20,12 @@ export const teacherRoutes = (teacherRepository: ITeacherRepository): RouteOptio
     },
     {
         method: 'PUT',
-        url: '/Teacher/:id',
+        url: '/Teacher/:teacherId',
         handler: updateTeacher(teacherRepository),
     },
     {
         method: 'DELETE',
-        url: '/Teacher/:id', 
+        url: '/Teacher/:teacherId', 
         handler: deleteTeacher(teacherRepository),
     },
 ])

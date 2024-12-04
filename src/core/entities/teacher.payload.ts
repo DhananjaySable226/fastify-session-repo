@@ -1,4 +1,4 @@
 import { type Teacher } from '../entities/teacher';
 
 
-export type TeacherTrainingPayload = Omit<Teacher, 'uuid'>;
+export type TeacherTrainingPayload = Omit<Teacher, 'teacherId'>;

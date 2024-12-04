@@ -52,8 +52,7 @@ export const createServer = async (): Promise<FastifyInstance> => {
 
     await server.register(docs)
     await server.register(config)
-
-    // Initialize the student repository
+    
     const studentRepository = new StudentRepository()
     const teacherRepository = new TeacherRepository();
 

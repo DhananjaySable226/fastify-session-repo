@@ -7,7 +7,6 @@ export const createStudent = (
     studentRepository: IStudentRepository
 ) => async function (request: FastifyRequest, reply: FastifyReply) {
     try {
-
         const payload = request.body as StudentTrainingPayload;
 
         console.log("Payload received:", payload);
@@ -50,7 +49,7 @@ export const updateStudent = (studentRepository: IStudentRepository) =>
             reply.status(404).send({ message: "Student not found" });
         }
     };
-    
+
 export const deleteStudent = (studentRepository: IStudentRepository) =>
     async (request: FastifyRequest, reply: FastifyReply) => {
         const { uuid } = request.params as { uuid: string };
@@ -61,5 +60,24 @@ export const deleteStudent = (studentRepository: IStudentRepository) =>
             reply.status(200).send({ message: "Student deleted successfully" });
         } else {
             reply.status(404).send({ message: "Student not found" });
+        }
+    };
+
+
+export const getStudentById = (studentRepository: IStudentRepository) =>
+    async (request: FastifyRequest, reply: FastifyReply) => {
+        const { teacherId } = request.params as { teacherId: string };
+
+        try {
+            const students = await studentRepository.getStudentById(teacherId);
+
+            if (students && students.length > 0) {
+                return reply.status(200).send(students);
+            } else {
+                return reply.status(404).send({ message: 'No students found for this teacher' });
+            }
+        } catch (error) {
+            console.error("Error fetching students:", error);
+            return reply.status(500).send({ message: 'Internal server error' });
         }
     };
