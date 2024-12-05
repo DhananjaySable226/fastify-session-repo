@@ -4,7 +4,8 @@ import {
      getStudentById,
     getAllStudents,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    getSudentStudent
 } from '@infrastructure/http/controllers/students.ctrl'
 import { type IStudentRepository } from '@core/repositories/student.repo';
 import {
@@ -46,5 +47,12 @@ export const studentRoutes = (studentRepository: IStudentRepository): RouteOptio
         url: '/studentUser/:uuid',
         schema: deleteStudentSchema,
         handler: deleteStudent(studentRepository),
+    },
+    
+    {
+        method: 'GET',
+        url: '/getstudentbyid/:teacherId',
+        // schema: deleteStudentSchema,
+        handler: getSudentStudent(studentRepository),
     },
 ])

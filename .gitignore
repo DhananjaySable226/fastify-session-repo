@@ -1,0 +1,53 @@
+# Node modules
+/node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+/bower_components/
+
+# Build output
+/dist/
+/build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# NPM package lock
+package-lock.json
+yarn.lock
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage directory used by tools like istanbul
+/coverage/
+
+# Next.js build output
+.next/
+
+# .nuxt/ (for Nuxt.js projects)
+.nuxt/
+
+# Gatsby files
+.cache/
+/public/
+
+# React Native
+.expo/

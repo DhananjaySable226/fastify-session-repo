@@ -2,6 +2,7 @@ import { IStudentRepository } from "@core/repositories/student.repo";
 import { StudentTrainingPayload } from "@core/entities/StudentTrainingPayload";
 import { StudentBaap } from "@core/entities/student";
 import StudentModel from "@infrastructure/database/models/student.model";
+import TeacherModel from "@infrastructure/database/models/teacher.model";
 
 
 export class StudentRepository implements IStudentRepository {
@@ -13,10 +14,29 @@ export class StudentRepository implements IStudentRepository {
     async getStudentById(teacherId: string): Promise<StudentBaap[] | undefined> {
         const students = await StudentModel.findAll({
             where: { teacherId },
-            raw: true 
+            raw: true
         });
-        
+
         return students.length > 0 ? students as StudentBaap[] : undefined;
+    };
+
+    async getSudentStudent(teacherId: string): Promise<StudentBaap[] | undefined> {
+
+        const students = await StudentModel.findAll({
+            where: { teacherId: teacherId },
+            include: {
+                model: TeacherModel,
+                as: 'teacher',
+                required: true
+            },
+            // raw: true
+        });
+        if (!students) {
+            return undefined;
+        }
+
+        return students.length > 0 ? students as StudentBaap[] : undefined;
+
     }
 
 

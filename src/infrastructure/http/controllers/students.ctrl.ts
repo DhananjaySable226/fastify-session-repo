@@ -2,6 +2,7 @@ import type { IStudentRepository } from "@core/repositories/student.repo";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { StudentService } from "@core/services/student";
 import type { StudentTrainingPayload } from "@core/entities/StudentTrainingPayload";
+import { UUID } from "sequelize";
 
 export const createStudent = (
     studentRepository: IStudentRepository
@@ -72,6 +73,24 @@ export const getStudentById = (studentRepository: IStudentRepository) =>
             const students = await studentRepository.getStudentById(teacherId);
 
             if (students && students.length > 0) {
+                return reply.status(200).send(students);
+            } else {
+                return reply.status(404).send({ message: 'No students found for this teacher' });
+            }
+        } catch (error) {
+            console.error("Error fetching students:", error);
+            return reply.status(500).send({ message: 'Internal server error' });
+        }
+    };
+
+export const getSudentStudent =  (studentRepository: IStudentRepository) =>
+    async (request: FastifyRequest, reply: FastifyReply) => {
+        const { teacherId } = request.params as { teacherId: string };
+
+        try {
+            const students = await studentRepository.getSudentStudent(teacherId);
+
+            if (students) {
                 return reply.status(200).send(students);
             } else {
                 return reply.status(404).send({ message: 'No students found for this teacher' });
