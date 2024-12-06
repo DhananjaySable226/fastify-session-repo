@@ -13,7 +13,8 @@ import {
     postStudentSchema,
     getAllStudentsSchema,
     updateStudentSchema,
-    deleteStudentSchema
+    deleteStudentSchema,
+    StudentWithTeacherListResponse
 } from "@infrastructure/http/schemas/student.schema"
 
 export const studentRoutes = (studentRepository: IStudentRepository): RouteOptions[] => ([
@@ -52,7 +53,7 @@ export const studentRoutes = (studentRepository: IStudentRepository): RouteOptio
     {
         method: 'GET',
         url: '/getstudentbyid/:teacherId',
-        // schema: deleteStudentSchema,
+        schema: StudentWithTeacherListResponse,
         handler: getSudentStudent(studentRepository),
     },
 ])
