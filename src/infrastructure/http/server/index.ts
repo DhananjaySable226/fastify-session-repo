@@ -7,7 +7,8 @@ import config from '@infrastructure/http/plugins/config'
 import sequelize from '@infrastructure/database/index'
 import { StudentRepository } from '@infrastructure/repositories/student.repo';
 import { TeacherRepository } from '@infrastructure/repositories/teacher.repo';
-
+import fastifyJwt from "@fastify/jwt";
+import {authRoutes} from "@infrastructure/http/auth/user.router";
 
 export const createServer = async (): Promise<FastifyInstance> => {
     const envToLogger: any = {
@@ -49,6 +50,11 @@ export const createServer = async (): Promise<FastifyInstance> => {
     server.get("/", async (request, reply) => {
         reply.send({ message: "Welcome to the TEAI service" });
     });
+
+    server.register(fastifyJwt, {
+        secret: "your_jwt_secret_key",
+    });
+    await authRoutes(server);
 
     await server.register(docs)
     await server.register(config)
