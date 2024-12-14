@@ -8,7 +8,9 @@ import sequelize from '@infrastructure/database/index'
 import { StudentRepository } from '@infrastructure/repositories/student.repo';
 import { TeacherRepository } from '@infrastructure/repositories/teacher.repo';
 import fastifyJwt from "@fastify/jwt";
-import {authRoutes} from "@infrastructure/http/auth/user.router";
+import { authRoutes } from "@infrastructure/http/auth/user.router";
+import authConfig from "@infrastructure/http/plugins/authConfig";
+
 
 export const createServer = async (): Promise<FastifyInstance> => {
     const envToLogger: any = {
@@ -54,11 +56,10 @@ export const createServer = async (): Promise<FastifyInstance> => {
     server.register(fastifyJwt, {
         secret: "your_jwt_secret_key",
     });
-    await authRoutes(server);
 
     await server.register(docs)
     await server.register(config)
-    
+
     const studentRepository = new StudentRepository()
     const teacherRepository = new TeacherRepository();
 
@@ -73,4 +74,64 @@ export const createServer = async (): Promise<FastifyInstance> => {
     });
     await server.ready()
     return server
+}
+
+
+
+
+export const createAuthServer = async (): Promise<FastifyInstance> => {
+    const envToLogger: any = {
+        development: {
+            transport: {
+                target: 'pino-pretty',
+                options: {
+                    translateTime: 'HH:MM:ss Z',
+                    ignore: 'pid,hostname'
+                }
+            }
+        },
+        production: true,
+        test: false
+
+    }
+    const environment = process.env.NODE_ENV ?? 'production'
+
+    await sequelize.sync()
+
+    const serverOptions: FastifyServerOptions = {
+        ajv: {
+            customOptions: {
+                removeAdditional: 'all',
+                coerceTypes: true,
+                useDefaults: true,
+                keywords: ['kind', 'modifier']
+            }
+        },
+        logger: envToLogger[environment] ?? true
+    }
+    const authServer = fastify(serverOptions).withTypeProvider<TypeBoxTypeProvider>()
+
+    authServer.register(cors, {
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    });
+
+    authServer.get("/auth", async (request, reply) => {
+        reply.send({ message: "Welcome to the TEAI service" });
+    });
+
+
+    await authServer.register(docs)
+    await authServer.register(authConfig)
+
+
+    // authServer.register(fastifyJwt, {
+    //     secret: "your_jwt_secret_key",
+    // });
+
+    await authRoutes(authServer);
+
+    await authServer.ready()
+    return authServer
 }

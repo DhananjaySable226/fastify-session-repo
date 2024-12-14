@@ -1,13 +1,21 @@
 require('module-alias/register')
-import {createServer} from "@infrastructure/http/server/index";
+import {createServer,createAuthServer} from "@infrastructure/http/server/index";
 import { initDB } from './infrastructure/database/index'
 
 const main = async (): Promise<void> => {
     const server = await createServer()
-    // const { API_PORT: port, API_HOST: host } = server.config;
+    const authServer = await createAuthServer()
+
+    const { API_PORT: port, API_HOST: host } = server.config;
+    const { API_PORT_AUTH: authPort, API_HOST: authHost } = authServer.authConfig;
+
     await initDB()
     // await sequelize.sync({force: true})
-    await server.listen({ port:3000 })
+    
+    await server.listen({ host, port });
+    await authServer.listen({ host : authHost, port: authPort})
+
+
     process.on('unhandledRejection', (err) => {
         console.error(err)
         process.exit(1)
